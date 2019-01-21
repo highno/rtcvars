@@ -46,7 +46,7 @@ Let's see some real action:
       Serial.begin(115200);                 // allow debug output
       
       state.registerVar( &reset_counter );  // we send a pointer to each of our variables
-      state.registerVar( &state );
+      state.registerVar( &program_step );
 
       if (state.loadFromRTC()) {            // we load the values from rtc memory back into the registered variables
         reset_counter++;
@@ -60,10 +60,10 @@ Let's see some real action:
     }
     
     void loop() {
-      // do your work here
-      System.println("Current state is " + program_step);
+      // do your work here - try to reset your chip externally or internally but don't power off...
+      Serial.println("Current state is " + (String)program_step);
       program_step = (program_step == 7) ? 1 : program_step + 1;
-      System.println("New state is " + program_step);
+      Serial.println("New state is " + (String)program_step);
       state.saveToRTC();                    // there are no parameters because it only needs the vars' definiton once 
       delay(1000);
     }
