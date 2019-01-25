@@ -88,7 +88,9 @@ This part will be filled later. Sorry for now - just have a look at the example.
 The same goes here...
 
 ## Multiple sets of state vars
-... and here.
+Basically it is a bad idea to use different sets of variables to store in RTC memory. Typically this is not needed but due to memory constraints sometimes there is the need for this. Problem is, to set up a state, you start by registering the vars. You can restore these only if you register vars of the same type in the same order. What if these are different between your states: state one needs to store 30 ints and state two 12 floats. You need to know before you set up your vars, which state you are restoring. This is what /state id/s are for:
+To keep two (or more) distinct sets of vars for different states, instantiate an additional <code>RTCVars</code> object and register different vars. Initally all <code>RTCVars</code> objects have the <code>state_id</code> 1. You can change this by calling the objects method <code>setStateId(byte new_state_id)</code>. Using different ids is essential for a correct recovery after reset. You can always read the <code>state_id</code> of your object by calling <code>getStateId()</code>.
+In your <code>setup()</code> method after creating your <code>RTCVars</code> object you should call its <code>getStateIdFromRTC()</code> function. Check this against your different valid states and register the regarding vars for this state. Afterwards you need to set your object's state_id to the one in the RTC for safety reasons. You can then load the state from RTC like in the basic example. 
 
 ## Memory and variable accounting
 As stated in Supported types and size, there are two limits to check for. 
