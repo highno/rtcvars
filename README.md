@@ -10,7 +10,8 @@ My own main target is the ESP8266 platform. I am happy owner of a brand new ESP3
 # Installation
 At the moment, this library is not part of the "official" repository within the arduino gui. Therefore you need to download the library as a .zip-file and install it by hand using the arduino gui.
 
-# Quick Examples
+# Quick examples
+## Pseudo code
 The major aim of the library is seamless integration but it still requires a little change to your existing programming pattern. In pseudo code it would look like this:
 
     // pseudo code example
@@ -34,6 +35,7 @@ The major aim of the library is seamless integration but it still requires a lit
 
 The magic lies in the first <code>if</code> statement. If the loading of a valid set of values works, you will (most likely) need to add some code, so that your look will enter the correct state. 
 
+## Basic example
 Let's see some real action:
 
     #include <RTCVars.h>
@@ -74,6 +76,11 @@ Registering does nothing but keeping track of where the variables are to find in
 
 Later on, everytime a change is made to some of the vars registered and have a consistent state is esablished, <code>state.saveToRTC()</code> is called to push these values to RTC memory.
 
+## Supported types and size
+Please note, that there are two limits in this lib: memory and the number of managed variables. Due to the fact how storage of vars is organized, there is a fixed upper boundry other than memory. By default, the limit is 32 variables, the types are <code>byte</code>, <code>char</code>, <code>int</code>, <code>long</code>, <code>float</code>. Since these types do not exceed 8 bytes each, the RTC memory is not the limit here (512 bytes - 28 starting offset - 7 header/checksum = 477 bytes). See advanced usage for more functionality to control these settings.  
+
+## Keep track of space
+
 # Advanced Usage
 This part will be filled later. Sorry for now - just have a look at the example.
 
@@ -82,3 +89,11 @@ The same goes here...
 
 ## Multiple sets of state vars
 ... and here.
+
+## Memory and variable accounting
+As stated in Supported types and size, there are two limits to check for. 
+First one is the RTC memory. This is a fixed size depending on the RTC type you are using. On the ESP8266 e.g. it is 512 bytes with a known good offset to use the memory freely of 28 bytes. Additionally the library uses 7 bytes for management purposes. At any time you can check available RTC memory by using the <code>getFreeRTCMem()</code> call of your <code>RTCVars</code> instance. It returns the number of free bytes as <code>int</code>.
+Second limit is the number of registered vars which is set within the lib as <code>32</code>. To change that limit, you need to change the <code>RTCVars.h</code>-file for now, as this limit is set by a <code>#define</code> statement. Within your code you can always check the <code>getFreeRTCVars()</code> function of your <code>RTCVars</code> instance. It returns the number of unused slots for registered vars.
+
+## Advanced example
+Aim of this example is to show all features developed so far.
