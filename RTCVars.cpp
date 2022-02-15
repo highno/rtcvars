@@ -1,9 +1,9 @@
 #include "Arduino.h"
 #include "RTCVars.h"
 
-#define RTC_BASE 28                   // this is a known good offset for unused RTC memory
+#define RTC_BASE 33                   // this is a known good offset for unused RTC memory
 #define RTC_STATE_HEADER_SIZE   6     // 3 bytes signature, 1 byte state_id, 2 byte  
-#define RTC_MAX_SIZE (511 - RTC_BASE) // 512 - RTC_BASE - 1 for checksum
+#define RTC_MAX_SIZE (511 - (RTC_BASE*4)) // 512 - (RTC_BASE*4) - 1 for checksum
 
 #define RTC_STATE_TYPE_NONE     0
 #define RTC_STATE_TYPE_INT      1
